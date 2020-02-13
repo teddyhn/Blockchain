@@ -4,6 +4,7 @@ from time import time
 from uuid import uuid4
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 
 class Blockchain(object):
@@ -119,6 +120,7 @@ class Blockchain(object):
 
 # Instantiate our Node
 app = Flask(__name__)
+CORS(app)
 
 # Generate a globally unique address for this node
 node_identifier = str(uuid4()).replace('-', '')
@@ -163,7 +165,7 @@ def mine():
     if blockchain.valid_proof(last_block_string, data['proof']):
         previous_hash = blockchain.hash(blockchain.last_block)
 
-        block_index = blockchain.new_transaction
+        block_index = blockchain.new_transaction(0, data['id'], 1)
 
         block = blockchain.new_block(data['proof'], previous_hash)
 
